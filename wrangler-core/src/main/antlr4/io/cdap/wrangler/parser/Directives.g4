@@ -64,6 +64,8 @@ directive
     | stringList
     | numberRanges
     | properties
+    | byteSize
+    | timeDuration
   )*?
   ;
 
@@ -128,7 +130,7 @@ propertyList
  ;
 
 property
- : Identifier '=' ( text | number | bool )
+ : Identifier '=' ( text | number | bool | byteSize | timeDuration )
  ;
 
 numberRanges
@@ -140,7 +142,15 @@ numberRange
  ;
 
 value
- : String | Number | Column | Bool
+ : String | Number | Column | Bool | BYTE_SIZE | TIME_DURATION
+ ;
+
+byteSize
+ : BYTE_SIZE
+ ;
+
+timeDuration
+ : TIME_DURATION
  ;
 
 ecommand
@@ -247,6 +257,31 @@ BackSlash: '\\';
 Dollar   : '$';
 Tilde    : '~';
 
+
+BYTE_SIZE
+ : Int BYTE_UNIT
+ ;
+
+TIME_DURATION
+ : Int TIME_UNIT
+ ;
+
+fragment BYTE_UNIT
+ : 'B'  // Bytes
+ | 'KB' // Kilobytes
+ | 'MB' // Megabytes
+ | 'GB' // Gigabytes
+ | 'TB' // Terabytes
+ | 'PB' // Petabytes
+ ;
+
+fragment TIME_UNIT
+ : 'ms'  // Milliseconds
+ | 's'   // Seconds
+ | 'm'   // Minutes
+ | 'h'   // Hours
+ | 'd'   // Days
+ ;
 
 Bool
  : 'true'
